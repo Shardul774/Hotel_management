@@ -1,6 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Text.RegularExpressions
 Module Module1
+    ' Find this in Veiw tab > SQL server object explorer > properties of localdb shown in left panel 
     Public con As New SqlConnection("Data Source=(localdb)\ProjectModels;Initial Catalog=hotel;Integrated Security=True")
     Public rs As New SqlDataAdapter
 
@@ -14,12 +15,12 @@ Module Module1
         ' intLevel (1) - Do just the basic. This level will already counter most of the SQL injection attacks
         ' intLevel (2) - &nbsp; (non breaking space) will be added to most words used in SQL queries to prevent unauthorized access to the database. Safe to be printed back into HTML code. Don't use for usernames or passwords
 
-        If Not IsDbNull(strValue) Then
+        If Not IsDBNull(strValue) Then
             If intLevel > 0 Then
-                strValue = replace(strValue, "'", "''") ' Most important one! This line alone can prevent most injection attacks
-                strValue = replace(strValue, "--", "")
-                strValue = replace(strValue, "[", "[[]")
-                strValue = replace(strValue, "%", "[%]")
+                strValue = Replace(strValue, "'", "''") ' Most important one! This line alone can prevent most injection attacks
+                strValue = Replace(strValue, "--", "")
+                strValue = Replace(strValue, "[", "[[]")
+                strValue = Replace(strValue, "%", "[%]")
             End If
 
             If intLevel > 1 Then
@@ -32,8 +33,8 @@ Module Module1
                     i2 = 0
                     For Each match As Match In matches
                         Dim groups As GroupCollection = match.Groups
-                        intLenghtLeft = groups.Item(0).Index + len(myArray(i)) + i2
-                        strValue = Left(strValue, intLenghtLeft - 1) & "&nbsp;" & right(strValue, len(strValue) - intLenghtLeft)
+                        intLenghtLeft = groups.Item(0).Index + Len(myArray(i)) + i2
+                        strValue = Left(strValue, intLenghtLeft - 1) & "&nbsp;" & Right(strValue, Len(strValue) - intLenghtLeft)
                         i2 += 5
                     Next
                 Next
